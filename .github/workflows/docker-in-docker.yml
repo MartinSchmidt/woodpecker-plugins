@@ -21,6 +21,9 @@ jobs:
           VERSION=$(grep '^FROM docker:' plugins/docker-in-docker/Containerfile | sed 's/FROM docker://' | sed 's/-dind//')
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Detected version: ${VERSION}"
+          
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner=${OWNER_LOWER}" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -43,7 +46,7 @@ jobs:
           platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/woodpecker-dind:${{ steps.version.outputs.version }}
-            ghcr.io/${{ github.repository_owner }}/woodpecker-dind:latest
+            ghcr.io/${{ steps.version.outputs.owner }}/woodpecker-dind:${{ steps.version.outputs.version }}
+            ghcr.io/${{ steps.version.outputs.owner }}/woodpecker-dind:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
