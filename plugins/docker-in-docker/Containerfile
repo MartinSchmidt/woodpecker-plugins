@@ -1,0 +1,10 @@
+FROM docker:29.0.2-dind
+
+
+LABEL org.opencontainers.image.title="Woodpecker Docker-in-Docker Plugin"
+LABEL org.opencontainers.image.description="DinD plugin for Woodpecker CI"
+
+COPY plugin-entrypoint.sh /usr/local/bin/plugin-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/plugin-entrypoint.sh"]
+CMD ["dockerd-entrypoint.sh"]
